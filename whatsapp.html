@@ -1,0 +1,270 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClinicFlow | Fluxo WhatsApp</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #e8f0ee;
+      color: #183c40;
+    }
+
+    header {
+      background: #087f8c;
+      color: white;
+      padding: 22px;
+      text-align: center;
+    }
+
+    header h1 { margin: 0 0 8px; }
+
+    .container {
+      max-width: 720px;
+      margin: 30px auto;
+      padding: 0 15px;
+    }
+
+    .chat {
+      background: #e5ddd5;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 18px rgba(0,0,0,.1);
+    }
+
+    .chat-header {
+      background: #075e54;
+      color: white;
+      padding: 16px;
+      font-weight: bold;
+    }
+
+    .messages {
+      height: 400px;
+      overflow-y: auto;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .message {
+      padding: 12px 15px;
+      border-radius: 10px;
+      max-width: 85%;
+      line-height: 1.5;
+      white-space: pre-line;
+      overflow-wrap: anywhere;
+    }
+
+    .bot {
+      background: white;
+      align-self: flex-start;
+    }
+
+    .user {
+      background: #dcf8c6;
+      align-self: flex-end;
+    }
+
+    .options {
+      background: #f8fbfa;
+      padding: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .options button {
+      border: 1px solid #087f8c;
+      background: white;
+      color: #087f8c;
+      padding: 11px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .options button:hover {
+      background: #e0f4f3;
+    }
+
+    .notice {
+      margin-top: 18px;
+      padding: 18px;
+      background: white;
+      border-radius: 10px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    a { color: #087f8c; }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>ClinicFlow</h1>
+    <p>Fluxo WhatsApp — Demonstração Interativa</p>
+  </header>
+
+  <main class="container">
+    <div class="chat">
+      <div class="chat-header">
+        ClinicFlow • Assistente Virtual (Simulação)
+      </div>
+
+      <div class="messages" id="messages"
+           role="log" aria-live="polite"></div>
+
+      <div class="options" id="options"></div>
+    </div>
+
+    <div class="notice">
+      <strong>Sobre esta demonstração:</strong>
+      este é um protótipo navegável do fluxo de atendimento.
+      As interações são simuladas no navegador e não criam
+      agendamentos reais nem enviam mensagens pelo WhatsApp.
+
+      <p>
+        O sistema administrativo real utiliza Supabase
+        para pacientes e agendamentos. A integração
+        WhatsApp Cloud API foi planejada, mas o envio
+        não foi validado devido à restrição 130497 da Meta.
+      </p>
+
+      <a href="index.html">← Voltar ao site ClinicFlow</a>
+    </div>
+  </main>
+
+  <script>
+    const messages = document.getElementById("messages");
+    const options = document.getElementById("options");
+
+    const doctors = {
+      "Clínica Geral": "Dr. Gregório Yang",
+      "Pediatria": "Dra. Anastásia Caixão",
+      "Dermatologia": "Dr. Cariberto Coelho"
+    };
+
+    function addMessage(text, type = "bot") {
+      const element = document.createElement("div");
+      element.className = "message " + type;
+      element.textContent = text;
+      messages.appendChild(element);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function showOptions(items) {
+      options.innerHTML = "";
+
+      items.forEach(item => {
+        const button = document.createElement("button");
+        button.textContent = item.label;
+        button.addEventListener("click", item.action);
+        options.appendChild(button);
+      });
+    }
+
+    function menu() {
+      addMessage(
+        "Olá! 👋 Bem-vindo ao ClinicFlow.\n" +
+        "Como podemos ajudar você hoje?"
+      );
+
+      showOptions([
+        { label: "Agendar consulta", action: escolherEspecialidade },
+        { label: "Ver especialidades", action: especialidades },
+        { label: "Horário de atendimento", action: horarios }
+      ]);
+    }
+
+    function escolherEspecialidade() {
+      addMessage("Agendar consulta", "user");
+      addMessage("Escolha a especialidade desejada:");
+
+      showOptions(
+        Object.keys(doctors).map(name => ({
+          label: name,
+          action: () => escolherMedico(name)
+        }))
+      );
+    }
+
+    function escolherMedico(especialidade) {
+      addMessage(especialidade, "user");
+      addMessage(
+        "Médico disponível para " + especialidade +
+        ":\n" + doctors[especialidade] +
+        "\n\nAs consultas têm duração de 30 minutos."
+      );
+
+      showOptions([
+        {
+          label: "Continuar agendamento",
+          action: () => concluir(especialidade)
+        },
+        { label: "Voltar ao início", action: reiniciar }
+      ]);
+    }
+
+    function concluir(especialidade) {
+      addMessage("Continuar agendamento", "user");
+
+      addMessage(
+        "Você selecionou:\n" +
+        "Especialidade: " + especialidade + "\n" +
+        "Médico: " + doctors[especialidade] + "\n\n" +
+        "Esta é uma demonstração do fluxo. " +
+        "Para efetivar um agendamento, " +
+        "utilize o painel administrativo do ClinicFlow."
+      );
+
+      showOptions([
+        { label: "Novo atendimento", action: reiniciar }
+      ]);
+    }
+
+    function especialidades() {
+      addMessage("Ver especialidades", "user");
+      addMessage(
+        "Atendemos nas especialidades:\n" +
+        "• Clínica Geral\n" +
+        "• Pediatria\n" +
+        "• Dermatologia"
+      );
+
+      showOptions([
+        { label: "Agendar consulta", action: escolherEspecialidade },
+        { label: "Voltar ao início", action: reiniciar }
+      ]);
+    }
+
+    function horarios() {
+      addMessage("Horário de atendimento", "user");
+      addMessage(
+        "Funcionamento:\n" +
+        "Segunda a sexta-feira\n" +
+        "08:00 às 12:00 e 13:00 às 18:00."
+      );
+
+      showOptions([
+        { label: "Agendar consulta", action: escolherEspecialidade },
+        { label: "Voltar ao início", action: reiniciar }
+      ]);
+    }
+
+    function reiniciar() {
+      messages.innerHTML = "";
+      menu();
+    }
+
+    menu();
+  </script>
+</body>
+</html>
