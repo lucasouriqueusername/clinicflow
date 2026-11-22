@@ -1,0 +1,246 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <title>ClinicFlow | Administração</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f2f6f8;
+            font-family: Arial, sans-serif;
+            color: #243746;
+        }
+
+        .login-card {
+            background: white;
+            width: 90%;
+            max-width: 380px;
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px #00000012;
+        }
+
+        h1 {
+            color: #00838f;
+            margin-top: 0;
+        }
+
+        p {
+            color: #64748b;
+        }
+
+        label {
+            display: block;
+            margin-top: 18px;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 24px;
+            padding: 13px;
+            background: #00838f;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #006874;
+        }
+    
+[hidden] {
+    display: none !important;
+}
+
+#dashboard {
+    width: 90%;
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 30px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+}
+
+#dashboard h1 {
+    color: #008b9a;
+}
+
+.dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(
+        auto-fit,
+        minmax(180px, 1fr)
+    );
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.dashboard-cards article {
+    padding: 20px;
+    background: #f2f6f8;
+    border-radius: 10px;
+}
+
+.dashboard-cards p {
+    font-size: 28px;
+    font-weight: bold;
+    color: #008b9a;
+}
+</style>
+</head>
+
+<body>
+    <main class="login-card">
+        <h1>ClinicFlow</h1>
+        <p>Painel Administrativo</p>
+
+        <form id="login-form">
+            <label for="email">E-mail</label>
+            <input
+                type="email"
+                id="email"
+                placeholder="Digite seu e-mail"
+                autocomplete="username"
+                required
+            >
+
+            <label for="password">Senha</label>
+            <input
+                type="password"
+                id="password"
+                placeholder="Digite sua senha"
+                autocomplete="current-password"
+                required
+            >
+
+            <button type="submit">
+                Entrar
+            </button>
+        </form>
+
+        <p id="message" role="status"></p>
+    </main>
+<section id="dashboard" hidden>
+    <h1>ClinicFlow | Painel Administrativo</h1>
+
+    <p>Bem-vindo ao sistema de gestão clínica!</p>
+
+    <button id="logout-btn" type="button">
+        Sair
+    </button>
+
+    <h2>Visão geral</h2>
+
+    <div class="dashboard-cards">
+        <article>
+            <h3>Pacientes</h3>
+            <p id="total-patients">--</p>
+        </article>
+
+        <article>
+            <h3>Agendamentos</h3>
+            <p id="total-appointments">--</p>
+        </article>
+
+        <article>
+            <h3>Especialidades</h3>
+            <p id="total-specialties">--</p>
+        </article>
+    </div>
+
+
+<h2>Cadastrar novo paciente</h2>
+
+<form id="patient-form">
+  <label for="patient-name">Nome completo</label>
+  <input
+    id="patient-name"
+    type="text"
+    placeholder="Nome do paciente"
+    required
+  >
+
+  <label for="patient-phone">Telefone</label>
+  <input
+    id="patient-phone"
+    type="tel"
+    placeholder="Ex.: 11999999999"
+    required
+  >
+
+  <button type="submit">Cadastrar paciente</button>
+</form>
+
+<p id="patient-message" role="status"></p>
+<h2>Pacientes cadastrados</h2>
+
+<div id="patients-list">
+    <p>Carregando pacientes...</p>
+</div>
+
+<h2>Agendamentos cadastrados</h2>
+
+<div id="appointments-list">
+    <p>Carregando agendamentos...</p>
+</div>
+
+
+<h2>Cadastrar novo agendamento</h2>
+
+<form id="appointment-form">
+    <label for="appointment-patient">Paciente</label>
+    <select id="appointment-patient" required>
+        <option value="">Selecione um paciente</option>
+    </select>
+
+    <label for="appointment-doctor">Médico</label>
+    <select id="appointment-doctor" required>
+        <option value="">Selecione um médico</option>
+    </select>
+
+    <label for="appointment-date">Data da consulta</label>
+    <input id="appointment-date" type="date" required>
+
+    <label for="appointment-time">Horário</label>
+    <input id="appointment-time" type="time" step="1800" required>
+
+    <button type="submit">Cadastrar agendamento</button>
+
+    <p id="appointment-message" role="status"></p>
+</form>
+</section>
+
+
+   
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="admin.js" defer></script>
+
+
+
+</body>
+</html>
