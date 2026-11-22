@@ -1,0 +1,207 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClinicFlow | Sistema de Lembretes</title>
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f8f8;
+      color: #183c40;
+    }
+
+    .reminders-header {
+      background: #087f8c;
+      color: white;
+      padding: 24px;
+      text-align: center;
+    }
+
+    .reminders-header h1 {
+      margin: 0 0 8px;
+    }
+
+    .reminders-main {
+      max-width: 900px;
+      margin: 35px auto;
+      padding: 0 20px;
+    }
+
+    .reminders-card {
+      background: white;
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 20px;
+      box-shadow: 0 3px 12px rgba(0,0,0,.07);
+    }
+
+    .reminders-card h2 {
+      margin-top: 0;
+      color: #087f8c;
+    }
+
+    .flow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: center;
+      margin: 25px 0;
+    }
+
+    .flow-step {
+      background: #e3f3f3;
+      padding: 14px 18px;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+
+    .simulate-button {
+      background: #087f8c;
+      color: white;
+      border: 0;
+      border-radius: 8px;
+      padding: 13px 22px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .simulate-button:hover {
+      background: #066874;
+    }
+
+    .status {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 8px;
+      background: #edf5f5;
+      white-space: pre-line;
+    }
+
+    .notice {
+      font-size: 14px;
+      color: #536b70;
+      line-height: 1.6;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 12px;
+      color: #087f8c;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="reminders-header">
+    <h1>ClinicFlow</h1>
+    <p>Sistema 02 — Lembretes de Consultas</p>
+  </header>
+
+  <main class="reminders-main">
+
+    <section class="reminders-card">
+      <h2>Automação de lembretes</h2>
+
+      <p>
+        O ClinicFlow registra lembretes vinculados
+        aos agendamentos de consultas médicas.
+      </p>
+
+      <p>
+        Cada lembrete é programado para 24 horas
+        antes da consulta.
+      </p>
+
+      <div class="flow">
+        <div class="flow-step">Agendamento</div>
+        <span>→</span>
+        <div class="flow-step">Supabase</div>
+        <span>→</span>
+        <div class="flow-step">Make</div>
+        <span>→</span>
+        <div class="flow-step">Processamento</div>
+      </div>
+    </section>
+
+    <section class="reminders-card">
+      <h2>Demonstração interativa</h2>
+
+      <p>
+        Execute uma simulação visual do processamento
+        de um lembrete de consulta.
+      </p>
+
+      <button
+        class="simulate-button"
+        onclick="simularLembrete()"
+      >
+        Simular lembrete
+      </button>
+
+      <div id="resultado" class="status" role="status"
+           aria-live="polite">
+        Aguardando simulação.
+      </div>
+    </section>
+
+    <section class="reminders-card">
+      <h2>Integração técnica</h2>
+
+      <p>
+        <strong>Banco de dados:</strong> Supabase
+      </p>
+
+      <p>
+        <strong>Automação:</strong> Make
+      </p>
+
+      <p>
+        <strong>Regra de negócio:</strong>
+        lembrete 24 horas antes da consulta
+      </p>
+
+      <p>
+        <strong>Canal planejado:</strong>
+        WhatsApp Cloud API
+      </p>
+
+      <p class="notice">
+        Esta página demonstra visualmente o fluxo.
+        Ela não envia mensagens nem altera registros
+        no banco de dados. O cenário de automação
+        foi testado separadamente no Make, com
+        processamento simulado e atualização de
+        status no Supabase.
+
+        O envio real pelo WhatsApp não foi validado
+        devido à restrição 130497 da API da Meta.
+      </p>
+
+      <a class="back-link" href="index.html">
+        ← Voltar ao site ClinicFlow
+      </a>
+    </section>
+
+  </main>
+
+  <script>
+    function simularLembrete() {
+      const resultado = document.getElementById("resultado");
+
+      resultado.textContent =
+        "1. Consulta identificada.\n" +
+        "2. Lembrete programado para 24 horas antes.\n" +
+        "3. Processamento simulado.\n" +
+        "4. Demonstração concluída com sucesso.\n\n" +
+        "Nenhuma mensagem foi enviada.";
+    }
+  </script>
+</body>
+</html>
